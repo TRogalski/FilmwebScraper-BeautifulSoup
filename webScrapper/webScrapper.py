@@ -10,13 +10,14 @@ class WebScrapper():
     serials = []
     page_url_template = "https://www.filmweb.pl/serials/search?orderBy=popularity&descending=true&page=%d" 
     
-    def __init__(self):
+    def __init__(self, page_count):
         self.fileUtils = FileUtils(datetime.datetime.today().strftime("%d-%m-%Y")) 
+        self.page_count = page_count
         
     def scrapp_serials(self):  
         self.fileUtils.create_archive_dir()
         
-        for page_index in range(1, 21):
+        for page_index in range(1, self.page_count + 1):
             
             response = requests.get(self.page_url_template % page_index)
             self.notify(page_index, response.status_code)
