@@ -16,19 +16,23 @@ class WebScrapper():
         
     def scrapp_serials(self):  
         self.fileUtils.create_archive_dir()
+        self.fileUtils.clear_day_log()
         
         for page_index in range(1, self.page_count + 1):
             
             response = requests.get(self.page_url_template % page_index)
-            self.notify(page_index, response.status_code)
-
+            response_status = response.status_code            
+            self.notify(page_index, response_status)
+            self.fileUtils.day_log(page_index, response_status)
+            
             html_soup = BeautifulSoup(response.content, 'html.parser')
             self.put_in_archive(page_index, html_soup)
             
-            hits = html_soup.find_all(class_="hits__item")
+            if response_status == 200:
+                hits = html_soup.find_all(class_="hits__item")
 
-            for hit in hits:
-                self.serials.append(self.get_formatted_data(hit))
+                for hit in hits:
+                    self.serials.append(self.get_formatted_data(hit))
                 
     
     
