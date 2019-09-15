@@ -4,16 +4,14 @@ except ImportError:
     from distutils.core import setup
 
 config = {
-    'description': 'Simple Python web scrapper',
+    'description': 'Simple Python web scrapper for filmweb TV series data',
     'author': 'TRogalski',
-    'url': 'TODO',
-    'download_url': 'TODO',
-    'author_email': 'TODO',
+    'author_email': 'tomracc@yahoo.com',
     'version': '0.1',
-    'install_requires': ['nose'],
-    'packages': ['WebScrapper'],
+    'install_requires': ['nose', 'bs4', 'requests'], # external dependencies (packages)
+    'packages': ['webScrapper'],
     'scripts': [],
-    'name': 'WebScrapper'
+    'name': 'webScrapper'
 }
 
 setup(**config)
