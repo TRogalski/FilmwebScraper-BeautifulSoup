@@ -1,8 +1,8 @@
 import requests
 import os
 import datetime
-from fileUtils import FileUtils
-from formatUtils import FormatUtils
+from utils.fileUtils import FileUtils
+from utils.formatUtils import FormatUtils
 from bs4 import BeautifulSoup
 
 class WebScrapper():
