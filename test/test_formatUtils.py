@@ -1,5 +1,5 @@
 from nose.tools import *
-from webScrapper.utils.formatUtils import FormatUtils
+from webScraper.utils.formatUtils import FormatUtils
 from bs4 import BeautifulSoup
 
 def test_to_float_1():

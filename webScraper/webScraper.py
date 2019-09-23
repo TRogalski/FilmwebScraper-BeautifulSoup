@@ -5,7 +5,7 @@ from utils.fileUtils import FileUtils
 from utils.formatUtils import FormatUtils
 from bs4 import BeautifulSoup
 
-class WebScrapper():
+class WebScraper():
     
     serials = []
     page_url_template = "https://www.filmweb.pl/serials/search?orderBy=popularity&descending=true&page=%d" 
@@ -14,7 +14,7 @@ class WebScrapper():
         self.fileUtils = FileUtils(datetime.datetime.today().strftime("%d-%m-%Y")) 
         self.page_count = page_count
         
-    def scrapp_serials(self):  
+    def scrap_serials(self):  
         self.fileUtils.create_archive_dir()
         self.fileUtils.clear_day_log()
         
