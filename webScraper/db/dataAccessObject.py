@@ -9,11 +9,9 @@ db_conn = pymysql.connect(
 )
 
 cur = db_conn.cursor()
+cur.execute("USE fw_scraping")
+cur.execute("SELECT * FROM new")
+print(cur.fetchone())
+cur.close()
+db_conn.close()
 
-try:
-    cur.execute("USE fw_scraping")
-    cur.execute("SELECT * FROM new")
-    print(cur.fetchone())
-finally:
-    db_conn.close()
-    cur.close()

@@ -32,8 +32,7 @@ class WebScraper():
                 hits = html_soup.find_all(class_="hits__item")
 
                 for hit in hits:
-                    self.serials.append(self.get_formatted_data(hit))
-                
+                    self.serials.append(self.get_formatted_data(hit))            
     
     
     def get_formatted_data(self, serial_section):

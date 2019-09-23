@@ -1,7 +1,9 @@
 import os
+import csv
 
 class FileUtils():
 
+    #should be taken as a constructor parameter for flexibility, same with other paths, ../../archive can be treated as default
     archive_dir = "../../archive"
 
     def __init__(self, date):
