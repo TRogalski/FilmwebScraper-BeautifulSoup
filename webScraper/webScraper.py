@@ -11,7 +11,7 @@ class WebScraper():
     page_url_template = "https://www.filmweb.pl/serials/search?orderBy=popularity&descending=true&page=%d" 
     
     def __init__(self, page_count):
-        self.fileUtils = FileUtils(datetime.datetime.today().strftime("%d-%m-%Y")) 
+        self.fileUtils = FileUtils() 
         self.page_count = page_count
         
     def scrap_serials(self):  
@@ -29,10 +29,13 @@ class WebScraper():
             self.put_in_archive(page_index, html_soup)
             
             if response_status == 200:
-                hits = html_soup.find_all(class_="hits__item")
+                hits = html_soup.find_all(class_ = "hits__item")
 
                 for hit in hits:
-                    self.serials.append(self.get_formatted_data(hit))            
+                    self.serials.append(self.get_formatted_data(hit))     
+        
+        self.fileUtils.create_csv_subdir()
+        self.fileUtils.save_csv(self.serials)       
     
     
     def get_formatted_data(self, serial_section):
@@ -49,7 +52,7 @@ class WebScraper():
     
     
     def put_in_archive(self, page, soup):      
-        self.fileUtils.create_subdir()
+        self.fileUtils.create_raw_subdir()
         self.fileUtils.save_raw(page, soup)
     
     

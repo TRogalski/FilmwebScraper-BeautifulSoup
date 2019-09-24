@@ -4,4 +4,4 @@ from webScraper import WebScraper
 
 webScraper = WebScraper(50)
 webScraper.scrap_serials()
-webScraper.display_serials()
+# webScraper.display_serials()
