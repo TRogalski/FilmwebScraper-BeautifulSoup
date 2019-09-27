@@ -14,6 +14,7 @@ class WebScraper():
         self.fileUtils = FileUtils() 
         self.page_count = page_count
         
+        
     def scrap_serials(self):  
         self.fileUtils.create_archive_dir()
         self.fileUtils.clear_day_log()
