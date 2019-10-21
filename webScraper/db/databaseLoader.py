@@ -1,5 +1,6 @@
 import pymysql
 import csv
+import datetime
 
 class DatabaseLoader():
     
@@ -11,7 +12,9 @@ class DatabaseLoader():
             self.db = db
 
 
-    def load_day_into_db(self, day_csv_path):
+    def load_day_into_db(self, archive_path, day):
+        
+        day_csv_path = archive_path + day + ".csv"
         db_conn = self.get_connection()
         cur = db_conn.cursor()
         
@@ -20,18 +23,24 @@ class DatabaseLoader():
         try:
             cur.execute("USE filmweb")
             self.create_serials_table(cur)
+            self.clear_previous_load_for_date(day, cur)
             with open(day_csv_path) as csv_file:
                 reader = csv.reader(csv_file, delimiter = ',')
                 next(reader, None)  # skip the headers
                 for row in reader:
                     row_cleaned = list(map(self.replace_na_with_none, row))
                     print(row_cleaned)
-                    cur.execute("""INSERT INTO serials(title, rating, rate_count, year)
-                                                VALUES(%s, %s, %s, %s)""", (row_cleaned[0], row_cleaned[1], row_cleaned[2], row_cleaned[3]))
+                    query = "INSERT INTO serials(scrap_date, title, rating, rate_count, year) VALUES(STR_TO_DATE({date}, '%d-%m-%Y'), {title}, {rating}, {rate_count}, {year})"
+                    cur.execute(query.format(date=day, title=row_cleaned[0], rating=row_cleaned[1], rate_count=row_cleaned[2], year=row_cleaned[3]))
                 cur.connection.commit()
         finally:
             db_conn.close()
             cur.close()
+    
+    def clear_previous_load_for_date(self, date, db_cursor):
+        db_cursor.execute("DELETE FROM serials WHERE scrap_date = STR_TO_DATE({}, '%d-%m-%Y')".format(date))
+        db_cursor.connection.commit()
+        print("Old data removed.")
     
     
     def get_connection(self):
@@ -51,6 +60,7 @@ class DatabaseLoader():
 
     def create_serials_table(self, db_cursor):
         db_cursor.execute("""CREATE TABLE IF NOT EXISTS serials(id BIGINT(7) NOT NULL AUTO_INCREMENT,
+                                                                scrap_date VARCHAR(10),
                                                                 title VARCHAR(200),
                                                                 rating FLOAT,
                                                                 rate_count INT,
@@ -66,7 +76,7 @@ class DatabaseLoader():
             return item
 
 db = DatabaseLoader("localhost", "root", 3306, "root", "mysql")
-db.load_day_into_db("../../../archive/csv/24-09-2019.csv")
+db.load_day_into_db("../../../archive/csv/", "21-10-2019")
 
     
     

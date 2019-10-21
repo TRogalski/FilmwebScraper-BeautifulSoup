@@ -46,6 +46,7 @@ class FileUtils():
 
 
     def clear_day_log(self):
+        self.create_log_subdir()
         open(self.archive_dir + "/log/" + self.date + ".txt", 'w').close()
     
 
