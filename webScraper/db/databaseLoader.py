@@ -30,15 +30,15 @@ class DatabaseLoader():
                 for row in reader:
                     row_cleaned = list(map(self.replace_na_with_none, row))
                     print(row_cleaned)
-                    query = "INSERT INTO serials(scrap_date, title, rating, rate_count, year) VALUES(STR_TO_DATE({date}, '%d-%m-%Y'), {title}, {rating}, {rate_count}, {year})"
-                    cur.execute(query.format(date=day, title=row_cleaned[0], rating=row_cleaned[1], rate_count=row_cleaned[2], year=row_cleaned[3]))
+                    query = "INSERT INTO serials(scrap_date, title, rating, rate_count, year) VALUES(STR_TO_DATE(%s, %s), %s, %s, %s, %s)"
+                    cur.execute(query, (day, "%d-%m-%Y", row_cleaned[0], row_cleaned[1], row_cleaned[2], row_cleaned[3]))
                 cur.connection.commit()
         finally:
             db_conn.close()
             cur.close()
     
     def clear_previous_load_for_date(self, date, db_cursor):
-        db_cursor.execute("DELETE FROM serials WHERE scrap_date = STR_TO_DATE({}, '%d-%m-%Y')".format(date))
+        db_cursor.execute("DELETE FROM serials WHERE scrap_date = STR_TO_DATE(%s, %s)", (date, '%d-%m-%Y'))
         db_cursor.connection.commit()
         print("Old data removed.")
     
@@ -76,7 +76,7 @@ class DatabaseLoader():
             return item
 
 db = DatabaseLoader("localhost", "root", 3306, "root", "mysql")
-db.load_day_into_db("../../../archive/csv/", "21-10-2019")
+db.load_day_into_db("../../../archive/csv/", "26-10-2019")
 
     
     
