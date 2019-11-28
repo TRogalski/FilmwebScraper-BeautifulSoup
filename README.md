@@ -13,7 +13,5 @@ There is also a success log for each page scrapp attempt.
 
 TODO:
 - More detailed data.
-- MySQL database for cleaned up data.
-- Code refactor & packaging.
 - There should be option to rerun of the failed fetches (if they appear in the log).
 - Add more descriptive error handling.
